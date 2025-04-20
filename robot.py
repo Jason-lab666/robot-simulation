@@ -73,3 +73,42 @@ if __name__ == "__main__":
     print("iterations =", iters)
     print("interval =", interval)
     print("outputFilename =", outFile)
+
+import random
+
+# Floor color：1 = yellow, 2 = cyan, 3 = green, 4 = blue, 5 = magenta, 6 = white
+COLOR_YELLOW = 1
+COLOR_CYAN = 2
+COLOR_GREEN = 3
+COLOR_BLUE = 4
+COLOR_MAGENTA = 5
+COLOR_WHITE = 6
+
+# Initialize checkerboard 
+def init_floor_checkerboard(rowNum, colNum):
+    floor = []
+    for r in range(rowNum):
+        row = []
+        for c in range(colNum):
+            # 4x4 
+            block_row = r // 4
+            block_col = c // 4
+            if (block_row + block_col) % 2 == 0:
+                row.append(COLOR_WHITE)
+            else:
+                row.append(COLOR_MAGENTA)
+        floor.append(row)
+    return floor
+
+# Initialize all-magenta
+def init_floor_all_magenta(rowNum, colNum):
+    return [[COLOR_MAGENTA for _ in range(colNum)] for _ in range(rowNum)]
+
+# Initilaize the floor with random stripes
+def init_floor_random_stripes(rowNum, colNum, seed):
+    random.seed(seed)
+    first_row = [random.randint(1, 6) for _ in range(colNum)]
+    floor = [first_row.copy() for _ in range(rowNum)]
+    for r in range(1, rowNum):
+        floor[r] = first_row.copy()  
+    return floor
