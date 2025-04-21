@@ -1,0 +1,65 @@
+# input_reader.py
+
+def read_file(max_attempt=5):
+    attempt = 0
+    while attempt < max_attempt:
+        filename = input("Enter input filename: ").strip()
+        try:
+            with open(filename, 'r') as file:
+                lines = [line.strip() for line in file.readlines()]
+                if len(lines) < 8:
+                    print("ERROR: Input file must contain at least 8 lines.")
+                    exit(1)
+
+                rowNum = int(lines[0])
+                if not (12 <= rowNum <= 100):
+                    print("ERROR: rowNum must be between 12 and 100.")
+                    exit(1)
+
+                colNum = int(lines[1])
+                if not (12 <= colNum <= 100):
+                    print("ERROR: colNum must be between 12 and 100.")
+                    exit(1)
+
+                robotNum = int(lines[2])
+                if not (1 <= robotNum <= 10):
+                    print("ERROR: robotNum must be between 1 and 10.")
+                    exit(1)
+
+                initType = int(lines[3])
+                if not (1 <= initType <= 3):
+                    print("ERROR: initType must be between 1 and 3.")
+                    exit(1)
+
+                seed = int(lines[4])
+                if not (10 <= seed <= 32767):
+                    print("ERROR: seed must be between 10 and 32767.")
+                    exit(1)
+
+                iterations = int(lines[5])
+                if not (5 <= iterations <= 2000):
+                    print("ERROR: iterations must be between 5 and 2000.")
+                    exit(1)
+
+                interval = int(lines[6])
+                if not (1 <= interval <= iterations):
+                    print("ERROR: interval must be between 1 and iterations.")
+                    exit(1)
+
+                outputFile = lines[7]
+                if outputFile == "":
+                    print("ERROR: outputFile name cannot be empty.")
+                    exit(1)
+
+                return rowNum, colNum, robotNum, initType, seed, iterations, interval, outputFile
+
+        except FileNotFoundError:
+            print("ERROR: Open file unsuccessful.")
+            attempt += 1
+
+        except ValueError:
+            print("ERROR: One or more lines in the file are not valid integers.")
+            exit(1)
+
+    print("ERROR: Too many failed attempts.")
+    exit(1)
