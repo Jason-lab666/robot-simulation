@@ -144,3 +144,59 @@ if __name__ == "__main__":
     for r in floor[:5]:
         print(r)
 
+
+# Ini robots
+def init_robots(floor, robotNum, rowNum, colNum, seed):
+    random.seed(seed)
+    
+    robots = []
+    for _ in range(robotNum):
+        x = random.randint(0, rowNum - 1)   # Random x
+        y = random.randint(0, colNum - 1)   # Random y
+        direction = random.randint(0, 3)  # 0=up 1=right 2=down 3=left
+        paint_color = random.randint(1, 4)  # Random color
+
+
+# Dictionary
+        robot = {
+            'x': x,
+            'y': y,
+            'dir': direction,
+            'color': paint_color
+        }
+        robots.append(robot)
+
+      
+        floor[x][y] = paint_color
+
+    return robots
+
+# Ini robot move 
+def move_forward(x, y, dir, rowNum, colNum):
+    if dir == 0:
+        x = (x - 1) % rowNum
+    elif dir == 1:
+        y = (y + 1) % colNum
+    elif dir == 2:
+        x = (x + 1) % rowNum
+    elif dir == 3:
+        y = (y - 1) % colNum
+    return x, y
+
+# Ini robot paint
+floor[robot['x']][robot['y']] = robot['color']
+
+
+if __name__ == "__main__":
+    row, col, robotNum, initType, seed, iterations, interval, outputFile = read_file()
+
+    # Ini floor test
+    if initType == 1:
+        floor = init_floor_random_stripes(row, col, seed)
+
+    elif initType == 2:
+        floor = init_floor_checkerboard(row, col)
+        
+    else:
+        floor = init_floor_all_magenta(row, col)
+
