@@ -250,4 +250,21 @@ def run_simulation(floor, robots, rowNum, colNum, iterations, interval, outputFi
         print_floor(floor, file=f)
     print(f"\n Simulation complete. Output written to: {outputFile}")
 
+# Test
+if __name__ == "__main__":
+    from input_reader import read_file
+    from board_init import *
+    
+    row, col, robotNum, initType, seed, iterations, interval, outputFile = read_file()
+
+    if initType == 1:
+        floor = init_floor_random_stripes(row, col, seed)
+    elif initType == 2:
+        floor = init_floor_checkerboard(row, col)
+    else:
+        floor = init_floor_all_magenta(row, col)
+
+    robots = init_robots(floor, robotNum, row, col, seed)
+
+    run_simulation(floor, robots, row, col, iterations, interval, outputFile)
 
