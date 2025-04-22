@@ -183,8 +183,28 @@ def move_forward(x, y, dir, rowNum, colNum):
         y = (y - 1) % colNum
     return x, y
 
-# Ini robot paint
-floor[robot['x']][robot['y']] = robot['color']
+def update_direction(dir, tile_color):
+    if tile_color == 1:      # Yellow :Turn right
+        return (dir + 1) % 4
+    
+    elif tile_color == 2:    # Cyan → Turn left
+        return (dir - 1) % 4
+    
+    elif tile_color == 3:    # Green → Turn 180 
+        return (dir + 2) % 4
+    
+    else:                    # Blue, Magenta, White → Not turning
+        return dir
+
+def simulate_step(floor, robots, rowNum, colNum):
+    for robot in robots:
+        for _ in range(4):
+            robot['x'], robot['y'] = move_forward(robot['x'], robot['y'], robot['dir'], rowNum, colNum)
+            floor[robot['x']][robot['y']] = robot['color']
+        tile_color = floor[robot['x']][robot['y']]
+        robot['dir'] = update_direction(robot['dir'], tile_color)
+        floor[robot['x']][robot['y']] = robot['color']
+
 
 
 if __name__ == "__main__":
@@ -199,4 +219,35 @@ if __name__ == "__main__":
         
     else:
         floor = init_floor_all_magenta(row, col)
+
+def print_floor(floor, file=None):
+    color_map = {  # Change the number into the first character of the color to make it clearer
+        1: 'Y',  # Yellow
+        2: 'C',  # Cyan
+        3: 'G',  # Green
+        4: 'B',  # Blue
+        5: 'M',  # Magenta
+        6: 'W'   # White
+    }
+    for row in floor:
+        line = ''.join(color_map.get(cell, '?') for cell in row)
+        if file:
+            print(line, file=file)
+        else:
+            print(line)
+
+
+def run_simulation(floor, robots, rowNum, colNum, iterations, interval, outputFile):
+    for step in range(1, iterations + 1):
+        simulate_step(floor, robots, rowNum, colNum)
+        if step % interval == 0:
+            print(f"\n--- Step {step} ---")
+            print_floor(floor)
+
+    # Write into the file
+    with open(outputFile, 'w') as f:
+        print(f"# Final floor after {iterations} iterations", file=f)
+        print_floor(floor, file=f)
+    print(f"\n Simulation complete. Output written to: {outputFile}")
+
 
