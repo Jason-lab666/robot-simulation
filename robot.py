@@ -42,6 +42,7 @@ def move_forward(x, y, dir, rowNum, colNum):
     return x, y
 
 def update_direction(dir, tile_color):
+<<<<<<< HEAD
     if tile_color == COLOR_YELLOW:
         return (dir + 1) % 4
     elif tile_color == COLOR_CYAN:
@@ -100,6 +101,29 @@ def run_simulation(floor, robots, rowNum, colNum, iterations, interval, outputFi
 
     print(f"\n Simulation complete. Output written to: {outputFile}")
 
+=======
+    if tile_color == 1:      # Yellow :Turn right
+        return (dir + 1) % 4
+    
+    elif tile_color == 2:    # Cyan → Turn left
+        return (dir - 1) % 4
+    
+    elif tile_color == 3:    # Green → Turn 180 
+        return (dir + 2) % 4
+    
+    else:                    # Blue, Magenta, White → Not turning
+        return dir
+
+def simulate_step(floor, robots, rowNum, colNum):
+    for robot in robots:
+        for _ in range(4):
+            robot['x'], robot['y'] = move_forward(robot['x'], robot['y'], robot['dir'], rowNum, colNum)
+            floor[robot['x']][robot['y']] = robot['color']
+        tile_color = floor[robot['x']][robot['y']]
+        robot['dir'] = update_direction(robot['dir'], tile_color)
+        floor[robot['x']][robot['y']] = robot['color']
+
+>>>>>>> 404b3c418da5e17d736b3d04eee917b60180555d
 
 
 if __name__ == "__main__":
@@ -122,6 +146,7 @@ if __name__ == "__main__":
     else:
         floor = init_floor_all_magenta(row, col)
 
+<<<<<<< HEAD
     print("\n=== Floor Preview (first 5 rows) ===")
     for r in floor[:5]:
         print(r)
@@ -132,3 +157,53 @@ if __name__ == "__main__":
         print(f"Robot {i+1}: Pos=({r['x']},{r['y']}), Dir={r['dir']}, Color={r['color']}")
 
     run_simulation(floor, robots, row, col, iterations, interval, outputFile)
+=======
+def print_floor(floor, file=None):
+    color_map = {  # Change the number into the first character of the color to make it clearer
+        1: 'Y',  # Yellow
+        2: 'C',  # Cyan
+        3: 'G',  # Green
+        4: 'B',  # Blue
+        5: 'M',  # Magenta
+        6: 'W'   # White
+    }
+    for row in floor:
+        line = ''.join(color_map.get(cell, '?') for cell in row)
+        if file:
+            print(line, file=file)
+        else:
+            print(line)
+
+
+def run_simulation(floor, robots, rowNum, colNum, iterations, interval, outputFile):
+    for step in range(1, iterations + 1):
+        simulate_step(floor, robots, rowNum, colNum)
+        if step % interval == 0:
+            print(f"\n--- Step {step} ---")
+            print_floor(floor)
+
+    # Write into the file
+    with open(outputFile, 'w') as f:
+        print(f"# Final floor after {iterations} iterations", file=f)
+        print_floor(floor, file=f)
+    print(f"\n Simulation complete. Output written to: {outputFile}")
+
+# Test
+if __name__ == "__main__":
+    from input_reader import read_file
+    from board_init import *
+    
+    row, col, robotNum, initType, seed, iterations, interval, outputFile = read_file()
+
+    if initType == 1:
+        floor = init_floor_random_stripes(row, col, seed)
+    elif initType == 2:
+        floor = init_floor_checkerboard(row, col)
+    else:
+        floor = init_floor_all_magenta(row, col)
+
+    robots = init_robots(floor, robotNum, row, col, seed)
+
+    run_simulation(floor, robots, row, col, iterations, interval, outputFile)
+
+>>>>>>> 404b3c418da5e17d736b3d04eee917b60180555d
