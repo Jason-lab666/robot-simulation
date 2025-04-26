@@ -1,4 +1,4 @@
-# robot.py
+# main.py
 
 from input_reader import read_file
 from board_init import (

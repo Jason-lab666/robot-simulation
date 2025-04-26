@@ -1,7 +1,5 @@
 # board_init.py
-
 import random
-
 # Floor color codes
 COLOR_YELLOW = 1
 COLOR_CYAN = 2
@@ -31,6 +29,4 @@ def init_floor_random_stripes(rowNum, colNum, seed):
     random.seed(seed)
     first_row = [random.randint(1, 6) for _ in range(colNum)]
     floor = [first_row.copy() for _ in range(rowNum)]
-    for r in range(1, rowNum):
-        floor[r] = first_row.copy()
     return floor
