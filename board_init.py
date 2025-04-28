@@ -1,12 +1,8 @@
-# board_init.py
 import random
-# Floor color codes
-COLOR_YELLOW = 1
-COLOR_CYAN = 2
-COLOR_GREEN = 3
-COLOR_BLUE = 4
-COLOR_MAGENTA = 5
-COLOR_WHITE = 6
+from color_defs import (
+    COLOR_YELLOW, COLOR_CYAN, COLOR_GREEN,
+    COLOR_BLUE, COLOR_MAGENTA, COLOR_WHITE
+)
 
 def init_floor_checkerboard(rowNum, colNum):
     floor = []

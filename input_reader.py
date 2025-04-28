@@ -1,4 +1,4 @@
-# input_reader.py
+import sys
 
 def read_file(max_attempt=5):
     attempt = 0
@@ -8,58 +8,57 @@ def read_file(max_attempt=5):
             with open(filename, 'r') as file:
                 lines = [line.strip() for line in file.readlines()]
                 if len(lines) < 8:
-                    print("ERROR: Input file must contain at least 8 lines.")
-                    exit(1)
+                    sys.stderr.write("ERROR: Input file must contain at least 8 lines.\n")
+                    sys.exit(1)
 
                 rowNum = int(lines[0])
                 if not (12 <= rowNum <= 100):
-                    print("ERROR: rowNum must be between 12 and 100.")
-                    exit(1)
+                    sys.stderr.write("ERROR: The number of rows was outside the specified range (12 to 100 inclusive)\n")
+                    sys.exit(1)
 
                 colNum = int(lines[1])
                 if not (12 <= colNum <= 100):
-                    print("ERROR: colNum must be between 12 and 100.")
-                    exit(1)
+                    sys.stderr.write("ERROR: The number of columns was outside the specified range (12 to 100 inclusive)\n")
+                    sys.exit(1)
 
                 robotNum = int(lines[2])
                 if not (1 <= robotNum <= 10):
-                    print("ERROR: robotNum must be between 1 and 10.")
-                    exit(1)
+                    sys.stderr.write("ERROR: The number of robots was outside the specified range (1 to 10 inclusive)\n")
+                    sys.exit(1)
 
                 initType = int(lines[3])
                 if not (1 <= initType <= 3):
-                    print("ERROR: initType must be between 1 and 3.")
-                    exit(1)
+                    sys.stderr.write("ERROR: The initialization type was outside the specified range (1 to 3 inclusive)\n")
+                    sys.exit(1)
 
                 seed = int(lines[4])
                 if not (10 <= seed <= 32767):
-                    print("ERROR: seed must be between 10 and 32767.")
-                    exit(1)
+                    sys.stderr.write("ERROR: The initialization seed was outside the specified range (10 to 32767 inclusive)\n")
+                    sys.exit(1)
 
                 iterations = int(lines[5])
                 if not (5 <= iterations <= 2000):
-                    print("ERROR: iterations must be between 5 and 2000.")
-                    exit(1)
+                    sys.stderr.write("ERROR: The number of iterations was outside the specified range (5 to 2000 inclusive)\n")
+                    sys.exit(1)
 
                 interval = int(lines[6])
                 if not (1 <= interval <= iterations):
-                    print("ERROR: interval must be between 1 and iterations.")
-                    exit(1)
+                    sys.stderr.write("ERROR: The print interval was outside the specified range (1 to number of iterations inclusive)\n")
+                    sys.exit(1)
 
                 outputFile = lines[7]
                 if outputFile == "":
-                    print("ERROR: outputFile name cannot be empty.")
-                    exit(1)
+                    sys.stderr.write("ERROR: Output file name cannot be empty.\n")
+                    sys.exit(1)
 
                 return rowNum, colNum, robotNum, initType, seed, iterations, interval, outputFile
 
         except FileNotFoundError:
-            print("ERROR: Open file unsuccessful.")
+            sys.stderr.write("ERROR: Open file unsuccessful.\n")
             attempt += 1
-
         except ValueError:
-            print("ERROR: One or more lines in the file are not valid integers.")
-            exit(1)
+            sys.stderr.write("ERROR: One or more lines in the file are not valid integers.\n")
+            sys.exit(1)
 
-    print("ERROR: Too many failed attempts.")
-    exit(1)
+    sys.stderr.write("ERROR: Too many failed attempts.\n")
+    sys.exit(1)
